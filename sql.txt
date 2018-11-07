@@ -1,0 +1,8 @@
+1. SELECT  site,max(totalrecords) FROM soda_data_repo.subway18_sta_by_hour_tb group by site;
+
+
+2. SELECT  site,sum(totalrecords) FROM soda_data_repo.subway18_sta_by_hour_tb group by site order by sum(totalrecords) DESC;
+
+3. select * from subway18_sta_by_hour_tb where site='8号线人民广场' order by data ASC;
+
+
