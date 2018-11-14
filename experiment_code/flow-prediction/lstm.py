@@ -220,6 +220,7 @@ print(dataX_site.shape)
 # test_size = len(dataset) - train_size
 # train, test = dataset[0:train_size,:], dataset[train_size:len(dataset),:]
 data_create = []
+scaler_minmax_list = []
 for i in range(40):
     dataX = dataX_site[i]
     scaler_minmax = MinMaxScaler()
@@ -233,13 +234,14 @@ for i in range(40):
     d = np.array(d)
     print(d.shape)
     data_create.append(d)
+    scaler_minmax_list.append(scaler_minmax)
 data_create = np.array(data_create)
 print(data_create.shape)
 
 
 # In[ ]:
 
-
+'''
 predict_test = []
 for i in range(40):
     d = data_create[i]
@@ -256,11 +258,11 @@ for i in range(40):
     #plt.plot(scaler_minmax.inverse_transform(model.predict(d[int(len(d)*split_rate):,:-1])),'r:',label='predict')
     #plt.legend()
     predict_test.append(model.predict(d[int(len(d)*split_rate):,:-1]))
-
+'''
 
 # In[ ]:
 
-
+print(len(scaler_minmax_list))
 site_predicted_hour = []
 for i in range(40):
     model = load_model('saved_model/lstm_%d.h5'%(i))
@@ -268,12 +270,15 @@ for i in range(40):
     predict_d = d[-1,1:]
     #print(predict_d)
     #print(predict_d.shape)
-    for i in range(8*24):
+    for j in range(8*24):
         predicted_hour = model.predict(np.array([predict_d[-167:]]))
         predict_d = np.append(predict_d, predicted_hour)
         #print(predict_d)
         predict_d = np.reshape(predict_d, (predict_d.shape[0],1))
         print(predict_d.shape)
+    print(i)
+    #scaler_minmax = scaler_minmax_list[i]
+    #site_predicted_hour.append(scaler_minmax.inverse_transform(predict_d[-8*24:]))
     site_predicted_hour.append(predict_d[-8*24:])
 
 
